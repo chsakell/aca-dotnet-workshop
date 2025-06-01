@@ -1,9 +1,8 @@
-﻿using Dapr.Client;
-using TasksTracker.TasksManager.Backend.Api.Models;
+using Dapr.Client;
 using System.Text.Json;
 using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
-
+using TasksTracker.TasksManager.Backend.Api.Models;
 
 namespace TasksTracker.TasksManager.Backend.Api.Services
 {
@@ -20,7 +19,6 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             _config = config;
             _logger = logger;
         }
-        
         public async Task<Guid> CreateNewTask(string taskName, string createdBy, string assignedTo, DateTime dueDate)
         {
             var taskModel = new TaskModel()
@@ -55,8 +53,6 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
 
         public async Task<List<TaskModel>> GetTasksByCreator(string createdBy)
         {
-            _logger.LogInformation("Query tasks created by: '{0}'", createdBy);
-            
             var query = "{" +
                     "\"filter\": {" +
                         "\"EQ\": { \"taskCreatedBy\": \"" + createdBy + "\" }" +
@@ -64,7 +60,11 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
 
             var queryResponse = await _daprClient.QueryStateAsync<TaskModel>(STORE_NAME, query);
 
-            var tasksList = queryResponse.Results.Select(q => q.Data).OrderByDescending(o=>o.TaskCreatedOn);
+            var tasksList = queryResponse.Results
+                .Where(q => q.Data != null)         // filter null data
+                .Select(q => q.Data!)
+                .OrderByDescending(o=>o.TaskCreatedOn);
+
             return tasksList.ToList();
         }
 
@@ -101,13 +101,6 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             return false;
         }
 
-        private async Task PublishTaskSavedEvent(TaskModel taskModel)
-        {
-            _logger.LogInformation("Publish Task Saved event for task with Id: '{0}' and Name: '{1}' for Assignee: '{2}'",
-            taskModel.TaskId, taskModel.TaskName, taskModel.TaskAssignedTo);
-            await _daprClient.PublishEventAsync("dapr-pubsub-servicebus", "tasksavedtopic", taskModel);
-        }
-        
         public async Task<List<TaskModel>> GetYesterdaysDueTasks()
         {
             var options = new JsonSerializerOptions
@@ -126,19 +119,23 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             var yesterday = DateTime.Today.AddDays(-1);
 
             var jsonDate = JsonSerializer.Serialize(yesterday, options);
-            
-           
-            
+
             _logger.LogInformation("Getting overdue tasks for yesterday date: '{0}'", jsonDate);
-            
+
             var query = "{" +
                     "\"filter\": {" +
                         "\"EQ\": { \"taskDueDate\": " + jsonDate + " }" +
                     "}}";
 
             var queryResponse = await _daprClient.QueryStateAsync<TaskModel>(STORE_NAME, query);
-            var tasksList = queryResponse.Results.Select(q => q.Data).Where(q=>q.IsCompleted==false && q.IsOverDue==false).OrderBy(o=>o.TaskCreatedOn);
-            return tasksList.ToList();
+
+            var tasksList = queryResponse.Results
+                             .Where(q => q.Data != null)         // filter null data
+                             .Select(q => q.Data)
+                             .Where(q => q!.IsCompleted == false && q.IsOverDue == false)
+                             .OrderBy(o => o!.TaskCreatedOn);
+
+            return tasksList.ToList()!;
         }
 
         public async Task MarkOverdueTasks(List<TaskModel> overDueTasksList)
@@ -149,7 +146,13 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
                 taskModel.IsOverDue = true;
                 await _daprClient.SaveStateAsync<TaskModel>(STORE_NAME, taskModel.TaskId.ToString(), taskModel);
             }
-        }      
-        
+        }
+
+        private async Task PublishTaskSavedEvent(TaskModel taskModel)
+        {
+            _logger.LogInformation("Publish Task Saved event for task with Id: '{0}' and Name: '{1}' for Assignee: '{2}'",
+            taskModel.TaskId, taskModel.TaskName, taskModel.TaskAssignedTo);
+            await _daprClient.PublishEventAsync("dapr-pubsub-servicebus", "tasksavedtopic", taskModel);
+        }
     }
 }

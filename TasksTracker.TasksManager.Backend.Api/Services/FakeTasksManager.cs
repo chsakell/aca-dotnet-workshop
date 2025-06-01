@@ -1,10 +1,10 @@
-﻿using TasksTracker.TasksManager.Backend.Api.Models;
+using TasksTracker.TasksManager.Backend.Api.Models;
 
 namespace TasksTracker.TasksManager.Backend.Api.Services
 {
     public class FakeTasksManager : ITasksManager
     {
-        private List<TaskModel> _tasksList = new List<TaskModel>();
+        List<TaskModel> _tasksList = new List<TaskModel>();
         Random rnd = new Random();
 
         private void GenerateRandomTasks()
@@ -20,7 +20,6 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
                     TaskDueDate = DateTime.UtcNow.AddDays(i),
                     TaskAssignedTo = $"assignee{rnd.Next(50)}@mail.com",
                 };
-
                 _tasksList.Add(task);
             }
         }
@@ -43,6 +42,7 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             };
 
             _tasksList.Add(task);
+
             return Task.FromResult(task.TaskId);
         }
 
@@ -62,14 +62,12 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
         public Task<TaskModel?> GetTaskById(Guid taskId)
         {
             var taskModel = _tasksList.FirstOrDefault(t => t.TaskId.Equals(taskId));
-
             return Task.FromResult(taskModel);
         }
 
         public Task<List<TaskModel>> GetTasksByCreator(string createdBy)
         {
             var tasksList = _tasksList.Where(t => t.TaskCreatedBy.Equals(createdBy)).OrderByDescending(o => o.TaskCreatedOn).ToList();
-
             return Task.FromResult(tasksList);
         }
 
@@ -80,10 +78,10 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             if (task != null)
             {
                 task.IsCompleted = true;
-                 return Task.FromResult(true);
+                return Task.FromResult(true);
             }
 
-             return Task.FromResult(false);
+            return Task.FromResult(false);
         }
 
         public Task<bool> UpdateTask(Guid taskId, string taskName, string assignedTo, DateTime dueDate)
@@ -95,10 +93,10 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
                 task.TaskName = taskName;
                 task.TaskAssignedTo = assignedTo;
                 task.TaskDueDate = dueDate;
-                 return Task.FromResult(true);
+                return Task.FromResult(true);
             }
 
-             return Task.FromResult(false);
+            return Task.FromResult(false);
         }
 
         public Task MarkOverdueTasks(List<TaskModel> overDueTasksList)
@@ -111,6 +109,6 @@ namespace TasksTracker.TasksManager.Backend.Api.Services
             var tasksList = _tasksList.Where(t => t.TaskDueDate.Equals(DateTime.Today.AddDays(-1))).ToList();
 
             return Task.FromResult(tasksList);
-        }
+        }  
     }
 }

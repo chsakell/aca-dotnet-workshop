@@ -1,4 +1,4 @@
-﻿namespace TasksTracker.TasksManager.Backend.Api.Models
+namespace TasksTracker.TasksManager.Backend.Api.Models
 {
     public class TaskModel
     {
@@ -10,7 +10,6 @@
         public string TaskAssignedTo { get; set; } = string.Empty;
         public bool IsCompleted { get; set; }
         public bool IsOverDue { get; set; }
-
     }
 
     public class TaskAddModel

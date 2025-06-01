@@ -1,0 +1,98 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36127.28
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aca-components", "aca-components", "{83EF96B0-445C-4E6B-BA58-D71A8A80DE60}"
+	ProjectSection(SolutionItems) = preProject
+		aca-components\containerapps-bindings-in-storagequeue.yaml = aca-components\containerapps-bindings-in-storagequeue.yaml
+		aca-components\containerapps-bindings-out-blobstorage.yaml = aca-components\containerapps-bindings-out-blobstorage.yaml
+		aca-components\containerapps-bindings-out-sendgrid.yaml = aca-components\containerapps-bindings-out-sendgrid.yaml
+		aca-components\containerapps-pubsub-svcbus.yaml = aca-components\containerapps-pubsub-svcbus.yaml
+		aca-components\containerapps-scheduled-cron.yaml = aca-components\containerapps-scheduled-cron.yaml
+		aca-components\containerapps-secretstore-kv.yaml = aca-components\containerapps-secretstore-kv.yaml
+		aca-components\containerapps-statestore-cosmos.yaml = aca-components\containerapps-statestore-cosmos.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bicep", "bicep", "{EBFEBE5C-3367-4C57-A874-8C37A547A311}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\main.bicep = bicep\main.bicep
+		bicep\main.parameters.json = bicep\main.parameters.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "modules", "modules", "{C30A4507-6112-4BD7-B0DF-1AEFABF20DD1}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\modules\container-apps-environment.bicep = bicep\modules\container-apps-environment.bicep
+		bicep\modules\container-apps.bicep = bicep\modules\container-apps.bicep
+		bicep\modules\cosmos-db.bicep = bicep\modules\cosmos-db.bicep
+		bicep\modules\dapr-components.bicep = bicep\modules\dapr-components.bicep
+		bicep\modules\key-vault.bicep = bicep\modules\key-vault.bicep
+		bicep\modules\service-bus.bicep = bicep\modules\service-bus.bicep
+		bicep\modules\storage-account.bicep = bicep\modules\storage-account.bicep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "container-apps", "container-apps", "{62E4CA86-06C6-4DDE-A159-3345F8F17091}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\modules\container-apps\processor-backend-service.bicep = bicep\modules\container-apps\processor-backend-service.bicep
+		bicep\modules\container-apps\webapi-backend-service.bicep = bicep\modules\container-apps\webapi-backend-service.bicep
+		bicep\modules\container-apps\webapp-frontend-service.bicep = bicep\modules\container-apps\webapp-frontend-service.bicep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "secrets", "secrets", "{047716E6-7F77-4F5B-A201-11D833D63D9D}"
+	ProjectSection(SolutionItems) = preProject
+		bicep\modules\container-apps\secrets\processor-backend-service-secrets.bicep = bicep\modules\container-apps\secrets\processor-backend-service-secrets.bicep
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "components", "components", "{6CCDF86F-1C34-44D1-B626-10D688D7017F}"
+	ProjectSection(SolutionItems) = preProject
+		components\dapr-bindings-in-storagequeue.yaml = components\dapr-bindings-in-storagequeue.yaml
+		components\dapr-bindings-out-blobstorage.yaml = components\dapr-bindings-out-blobstorage.yaml
+		components\dapr-bindings-out-sendgrid.yaml = components\dapr-bindings-out-sendgrid.yaml
+		components\dapr-pubsub-redis.yaml = components\dapr-pubsub-redis.yaml
+		components\dapr-pubsub-svcbus.yaml = components\dapr-pubsub-svcbus.yaml
+		components\dapr-scheduled-cron.yaml = components\dapr-scheduled-cron.yaml
+		components\dapr-statestore-cosmos.yaml = components\dapr-statestore-cosmos.yaml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksTracker.Processor.Backend.Svc", "TasksTracker.Processor.Backend.Svc\TasksTracker.Processor.Backend.Svc.csproj", "{ABF52657-9B7E-7293-37BA-DB81A8CF3E99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksTracker.TasksManager.Backend.Api", "TasksTracker.TasksManager.Backend.Api\TasksTracker.TasksManager.Backend.Api.csproj", "{B029EBE5-EC99-24CE-16B6-D2F3D083C83D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TasksTracker.WebPortal.Frontend.Ui", "TasksTracker.WebPortal.Frontend.Ui\TasksTracker.WebPortal.Frontend.Ui.csproj", "{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABF52657-9B7E-7293-37BA-DB81A8CF3E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABF52657-9B7E-7293-37BA-DB81A8CF3E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABF52657-9B7E-7293-37BA-DB81A8CF3E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABF52657-9B7E-7293-37BA-DB81A8CF3E99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B029EBE5-EC99-24CE-16B6-D2F3D083C83D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B029EBE5-EC99-24CE-16B6-D2F3D083C83D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B029EBE5-EC99-24CE-16B6-D2F3D083C83D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B029EBE5-EC99-24CE-16B6-D2F3D083C83D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C30A4507-6112-4BD7-B0DF-1AEFABF20DD1} = {EBFEBE5C-3367-4C57-A874-8C37A547A311}
+		{62E4CA86-06C6-4DDE-A159-3345F8F17091} = {C30A4507-6112-4BD7-B0DF-1AEFABF20DD1}
+		{047716E6-7F77-4F5B-A201-11D833D63D9D} = {62E4CA86-06C6-4DDE-A159-3345F8F17091}
+		{ABF52657-9B7E-7293-37BA-DB81A8CF3E99} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B029EBE5-EC99-24CE-16B6-D2F3D083C83D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0F4FB42B-0B5F-61B7-436B-E5AED7EE130A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B0476D11-25BF-44E3-9269-347AD44569E7}
+	EndGlobalSection
+EndGlobal

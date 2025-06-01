@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using TasksTracker.TasksManager.Backend.Api.Models;
 using TasksTracker.TasksManager.Backend.Api.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace TasksTracker.TasksManager.Backend.Api.Controllers
 {
@@ -29,24 +27,20 @@ namespace TasksTracker.TasksManager.Backend.Api.Controllers
         public async Task<IActionResult> GetTask(Guid taskId)
         {
             var task = await _tasksManager.GetTaskById(taskId);
-            if (task != null)
-            {
-                return Ok(task);
-            }
 
-            return NotFound();
-
+            return (task != null) ? Ok(task) : NotFound();
         }
 
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] TaskAddModel taskAddModel)
         {
-            var taskId = await _tasksManager.CreateNewTask(taskAddModel.TaskName,
-                                taskAddModel.TaskCreatedBy,
-                                taskAddModel.TaskAssignedTo,
-                                taskAddModel.TaskDueDate);
+            var taskId = await _tasksManager.CreateNewTask(
+                taskAddModel.TaskName,
+                taskAddModel.TaskCreatedBy,
+                taskAddModel.TaskAssignedTo,
+                taskAddModel.TaskDueDate
+            );
 
-        
             return Created($"/api/tasks/{taskId}", null);
 
         }
@@ -54,16 +48,14 @@ namespace TasksTracker.TasksManager.Backend.Api.Controllers
         [HttpPut("{taskId}")]
         public async Task<IActionResult> Put(Guid taskId, [FromBody] TaskUpdateModel taskUpdateModel)
         {
-            var updated = await _tasksManager.UpdateTask(taskId,
-                                                    taskUpdateModel.TaskName,
-                                                    taskUpdateModel.TaskAssignedTo,
-                                                    taskUpdateModel.TaskDueDate);
-            if (updated)
-            {
-                return Ok();
-            }
+            var updated = await _tasksManager.UpdateTask(
+                taskId,
+                taskUpdateModel.TaskName,
+                taskUpdateModel.TaskAssignedTo,
+                taskUpdateModel.TaskDueDate
+            );
 
-            return BadRequest();
+            return updated ? Ok() : BadRequest();
         }
 
         [HttpPut("{taskId}/markcomplete")]
@@ -71,24 +63,15 @@ namespace TasksTracker.TasksManager.Backend.Api.Controllers
         {
             var updated = await _tasksManager.MarkTaskCompleted(taskId);
 
-            if (updated)
-            {
-                return Ok();
-            }
-
-            return BadRequest();
+            return updated ? Ok() : BadRequest();
         }
 
         [HttpDelete("{taskId}")]
         public async Task<IActionResult> Delete(Guid taskId)
         {
             var deleted = await _tasksManager.DeleteTask(taskId);
-            if (deleted)
-            {
-                return Ok();
-            }
 
-            return NotFound();
+            return deleted ? Ok() : NotFound();
         }
     }
 }

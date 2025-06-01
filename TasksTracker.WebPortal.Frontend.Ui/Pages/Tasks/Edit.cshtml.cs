@@ -12,6 +12,7 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks
 
         [BindProperty]
         public TaskUpdateModel? TaskUpdate { get; set; }
+        public string? TasksCreatedBy { get; set; }
 
         public EditModel(IHttpClientFactory httpClientFactory, DaprClient daprClient)
         {
@@ -21,16 +22,19 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks
 
         public async Task<IActionResult> OnGetAsync(Guid? id)
         {
+            TasksCreatedBy = Request.Cookies["TasksCreatedByCookie"];
+
+            if (String.IsNullOrEmpty(TasksCreatedBy))
+            {
+                return RedirectToPage("../Index");
+            }
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            // direct svc to svc http request
-            // var httpClient = _httpClientFactory.CreateClient("BackEndApiExternal");
-            // var Task = await httpClient.GetFromJsonAsync<TaskModel>($"api/tasks/{id}");
-
-            //Dapr SideCar Invocation
+            // Dapr SideCar Invocation
             var Task = await _daprClient.InvokeMethodAsync<TaskModel>(HttpMethod.Get, "tasksmanager-backend-api", $"api/tasks/{id}");
 
             if (Task == null)
@@ -59,13 +63,8 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks
 
             if (TaskUpdate != null)
             {
-                // direct svc to svc http request
-                // var httpClient = _httpClientFactory.CreateClient("BackEndApiExternal");
-                // var result = await httpClient.PutAsJsonAsync($"api/tasks/{TaskUpdate.TaskId}", TaskUpdate);
-
-                //Dapr SideCar Invocation
+                // Dapr SideCar Invocation
                 await _daprClient.InvokeMethodAsync<TaskUpdateModel>(HttpMethod.Put, "tasksmanager-backend-api", $"api/tasks/{TaskUpdate.TaskId}", TaskUpdate);
-
             }
 
             return RedirectToPage("./Index");

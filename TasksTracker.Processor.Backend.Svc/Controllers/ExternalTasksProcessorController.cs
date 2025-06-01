@@ -1,4 +1,4 @@
-﻿using Dapr.Client;
+using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using TasksTracker.Processor.Backend.Svc.Models;
 
@@ -12,8 +12,8 @@ namespace TasksTracker.Processor.Backend.Svc.Controllers
         private readonly DaprClient _daprClient;
         private const string OUTPUT_BINDING_NAME = "externaltasksblobstore";
         private const string OUTPUT_BINDING_OPERATION = "create";
-        public ExternalTasksProcessorController(ILogger<ExternalTasksProcessorController> logger,
-                                                DaprClient daprClient)
+
+        public ExternalTasksProcessorController(ILogger<ExternalTasksProcessorController> logger, DaprClient daprClient)
         {
             _logger = logger;
             _daprClient = daprClient;
@@ -34,7 +34,8 @@ namespace TasksTracker.Processor.Backend.Svc.Controllers
 
                 _logger.LogInformation("Saved external task to the state store successfully. Task name: '{0}', Task Id: '{1}'", taskModel.TaskName, taskModel.TaskId);
 
-                 IReadOnlyDictionary<string,string> metaData = new Dictionary<string, string>()
+                //code to invoke external binding and store queue message content into blob file in Azure storage
+                IReadOnlyDictionary<string, string> metaData = new Dictionary<string, string>()
                     {
                         { "blobName", $"{taskModel.TaskId}.json" },
                     };

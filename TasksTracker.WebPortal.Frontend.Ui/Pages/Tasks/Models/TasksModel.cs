@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks.Models
@@ -13,7 +13,6 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks.Models
         public string TaskAssignedTo { get; set; } = string.Empty;
         public bool IsCompleted { get; set; }
         public bool IsOverDue { get; set; }
-
     }
 
     public class TaskAddModel

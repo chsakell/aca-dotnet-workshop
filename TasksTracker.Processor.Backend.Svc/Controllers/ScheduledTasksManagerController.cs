@@ -1,4 +1,4 @@
-﻿using Dapr.Client;
+using Dapr.Client;
 using Microsoft.AspNetCore.Mvc;
 using TasksTracker.Processor.Backend.Svc.Models;
 
@@ -10,8 +10,7 @@ namespace TasksTracker.Processor.Backend.Svc.Controllers
     {
         private readonly ILogger<ScheduledTasksManagerController> _logger;
         private readonly DaprClient _daprClient;
-        public ScheduledTasksManagerController(ILogger<ScheduledTasksManagerController> logger,
-                                                DaprClient daprClient)
+        public ScheduledTasksManagerController(ILogger<ScheduledTasksManagerController> logger, DaprClient daprClient)
         {
             _logger = logger;
             _daprClient = daprClient;
@@ -27,6 +26,7 @@ namespace TasksTracker.Processor.Backend.Svc.Controllers
             var overdueTasksList = new List<TaskModel>();
 
             var tasksList = await _daprClient.InvokeMethodAsync<List<TaskModel>>(HttpMethod.Get, "tasksmanager-backend-api", $"api/overduetasks");
+
             _logger.LogInformation($"ScheduledTasksManager::completed query state store for tasks, retrieved tasks count: {tasksList?.Count()}");
 
             tasksList?.ForEach(taskModel =>
@@ -36,10 +36,11 @@ namespace TasksTracker.Processor.Backend.Svc.Controllers
                     overdueTasksList.Add(taskModel);
                 }
             });
-            
+
             if (overdueTasksList.Count> 0)
             {
                 _logger.LogInformation($"ScheduledTasksManager::marking {overdueTasksList.Count()} as overdue tasks");
+
                 await _daprClient.InvokeMethodAsync(HttpMethod.Post, "tasksmanager-backend-api", $"api/overduetasks/markoverdue", overdueTasksList);
             }
         }

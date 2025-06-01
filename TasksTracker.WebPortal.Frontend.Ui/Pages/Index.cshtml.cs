@@ -1,5 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using TasksTracker.WebPortal.Frontend.Ui.Pages.Tasks.Models;
 
 namespace TasksTracker.WebPortal.Frontend.Ui.Pages
 {
@@ -8,7 +9,7 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages
     {
         private readonly ILogger<IndexModel> _logger;
         [BindProperty]
-        public string TasksCreatedBy { get; set; }
+        public string? TasksCreatedBy { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger)
         {
@@ -17,7 +18,6 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages
 
         public void OnGet()
         {
-
         }
 
         public IActionResult OnPost()
@@ -25,11 +25,9 @@ namespace TasksTracker.WebPortal.Frontend.Ui.Pages
             if (!string.IsNullOrEmpty(TasksCreatedBy))
             {
                 Response.Cookies.Append("TasksCreatedByCookie", TasksCreatedBy);
-
             }
 
             return RedirectToPage("./Tasks/Index");
         }
-
     }
 }
